@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: inter-caller
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        ttl: 1s
+eureka:
+  client:
+    registry-fetch-interval-seconds: 1
+
+feign:
+  client:
+    config:
+      inter-callme:
+        read-timeout: 100
+        connect-timeout: 100
+        loggerLevel: full

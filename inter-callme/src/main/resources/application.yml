@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: inter-callme
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${random.value}}
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 3
+
+server:
+  port: 0
+
+app:
+  delay: 0
+
+

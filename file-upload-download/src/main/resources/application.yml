@@ -1,0 +1,8 @@
+file:
+  storage:
+    location: "fileStorage"
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 2MB

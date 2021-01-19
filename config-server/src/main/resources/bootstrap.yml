@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: native #, vault
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config-repo
+#        vault:
+#          host: 172.17.0.2
+#          authentication: TOKEN
+#          token: jitu

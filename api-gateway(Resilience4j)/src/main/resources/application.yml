@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: inter-callme
+          uri: lb://inter-callme
+          predicates:
+            - Path=/api/callme/**
+          filters:
+            - RewritePath=/api(?<segment>/?.*), $\{segment}
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 40
+            - name: CircuitBreaker
+              args:
+                name: sampleSlowCircuitBreaker
+                fallbackUri: forward:/fallback/test
+        - id: inter-caller
+          uri: lb://inter-caller
+          predicates:
+            - Path=/api/caller/**
+          filters:
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 40
+    loadbalancer:
+      ribbon:
+        enabled: false
+  redis:
+    host: 172.17.0.2
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
